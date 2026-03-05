@@ -70,39 +70,38 @@ Para ejecutar el proyecto se requiere:
 
 1. Clonar el repositorio desde GitHub
 
-```
+
 git clone https://github.com/kennyboccanedes/ACTIVIDAD-INTEGRADORA_2
-```
+
 
 2. Copiar la carpeta del proyecto dentro de:
 
-```
 htdocs
-```
+
 
 3. Abrir **phpMyAdmin**
 
 4. Crear una base de datos llamada:
 
-```
+
 inventario
-```
+
 
 5. Importar el archivo SQL ubicado en el proyecto:
 
-```
+
 mapa.sql
-```
+
 
 6. Ejecutar el sistema en el navegador:
 
-```
+
 http://localhost/integradora
-```
 
----
 
-## Base de Datos
+
+
+ Base de Datos
 
 El sistema utiliza una tabla llamada **productos** con la siguiente estructura:
 
@@ -113,11 +112,11 @@ El sistema utiliza una tabla llamada **productos** con la siguiente estructura:
 | precio | DECIMAL | Precio del producto        |
 | stock  | INT     | Cantidad disponible        |
 
----
+
 
  Estructura del proyecto
 
-```
+
 integradora
 │
 ├── index.php
@@ -128,9 +127,9 @@ integradora
 ├── views_productos_create.php
 ├── mapa.sql
 └── README.md
-```
 
----
+
+
 
  Autor
 
@@ -138,7 +137,7 @@ Proyecto desarrollado por:
 
 **Kenny Boccanedes**
 
----
+
 
  Notas
 
