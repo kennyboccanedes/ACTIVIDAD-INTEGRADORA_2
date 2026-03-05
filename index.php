@@ -1,27 +1,37 @@
 <?php
-// index.php
-require_once __DIR__ . '/controllers/Controlador_Producto_Controller.php';
 
-$controller = new ProductoController();
-$action = $_GET['action'] ?? 'index';
+require_once "config_database.php";
+require_once "modelos_Producto.php";
+require_once "Controlador_Producto_Controller.php";
 
-switch ($action) {
-    case 'create':
-        $controller->create();
-        break;
-    case 'store':
-        $controller->store();
-        break;
-    case 'edit':
-        $controller->edit();
-        break;
-    case 'update':
-        $controller->update();
-        break;
-    case 'delete':
-        $controller->delete();
-        break;
+$controller = new ControladorProductoController();
+
+$action = $_GET['action'] ?? 'listar';
+
+switch($action){
+
+    case "crear":
+        $controller->crear();
+    break;
+
+    case "guardar":
+        $controller->guardar();
+    break;
+
+    case "editar":
+        $controller->editar($_GET['id']);
+    break;
+
+    case "actualizar":
+        $controller->actualizar();
+    break;
+
+    case "eliminar":
+        $controller->eliminar($_GET['id']);
+    break;
+
     default:
-        $controller->index();
+        $controller->listar();
+    break;
 }
 ?>
