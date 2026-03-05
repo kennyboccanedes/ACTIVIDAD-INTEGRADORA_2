@@ -1,108 +1,48 @@
 <?php
-// models/Producto.php
-require_once __DIR__ . '/../config/database.php';
 
-class Producto {
-    private $conn;
-    private $table = 'productos';
+require_once "config_database.php";
 
-    public $id;
-    public $nombre;
-    public $descripcion;
-    public $precio;
-    public $stock;
+class Producto{
 
-    public function __construct() {
-        $database = new Database();
-        $this->conn = $database->getConnection();
+    private $db;
+
+    public function __construct(){
+        $this->db = Database::conectar();
     }
 
-    // Obtener todos los productos
-    public function read() {
-        $query = "SELECT * FROM " . $this->table . " ORDER BY created_at DESC";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        return $stmt;
+    public function listar(){
+        return $this->db->query("SELECT * FROM productos");
     }
 
-    // Obtener un producto por ID
-    public function readOne() {
-        $query = "SELECT * FROM " . $this->table . " WHERE id = :id LIMIT 1";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $this->id);
-        $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($row) {
-            $this->nombre = $row['nombre'];
-            $this->descripcion = $row['descripcion'];
-            $this->precio = $row['precio'];
-            $this->stock = $row['stock'];
-            return true;
-        }
-        return false;
+    public function crear($nombre,$precio,$stock){
+
+        $sql = "INSERT INTO productos(nombre,precio,stock)
+                VALUES('$nombre','$precio','$stock')";
+
+        return $this->db->query($sql);
     }
 
-    // Crear producto
-    public function create() {
-        $query = "INSERT INTO " . $this->table . "
-                  SET nombre = :nombre, descripcion = :descripcion,
-                      precio = :precio, stock = :stock";
-        $stmt = $this->conn->prepare($query);
+    public function obtener($id){
 
-        // Limpiar datos (aunque PDO los trata, es buena práctica)
-        $this->nombre = htmlspecialchars(strip_tags($this->nombre));
-        $this->descripcion = htmlspecialchars(strip_tags($this->descripcion));
-        $this->precio = htmlspecialchars(strip_tags($this->precio));
-        $this->stock = htmlspecialchars(strip_tags($this->stock));
-
-        // Bind parameters
-        $stmt->bindParam(':nombre', $this->nombre);
-        $stmt->bindParam(':descripcion', $this->descripcion);
-        $stmt->bindParam(':precio', $this->precio);
-        $stmt->bindParam(':stock', $this->stock);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-        return false;
+        $sql = "SELECT * FROM productos WHERE id=$id";
+        return $this->db->query($sql)->fetch_assoc();
     }
 
-    // Actualizar producto
-    public function update() {
-        $query = "UPDATE " . $this->table . "
-                  SET nombre = :nombre, descripcion = :descripcion,
-                      precio = :precio, stock = :stock
-                  WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
+    public function actualizar($id,$nombre,$precio,$stock){
 
-        $this->nombre = htmlspecialchars(strip_tags($this->nombre));
-        $this->descripcion = htmlspecialchars(strip_tags($this->descripcion));
-        $this->precio = htmlspecialchars(strip_tags($this->precio));
-        $this->stock = htmlspecialchars(strip_tags($this->stock));
-        $this->id = htmlspecialchars(strip_tags($this->id));
+        $sql = "UPDATE productos
+                SET nombre='$nombre',
+                    precio='$precio',
+                    stock='$stock'
+                WHERE id=$id";
 
-        $stmt->bindParam(':nombre', $this->nombre);
-        $stmt->bindParam(':descripcion', $this->descripcion);
-        $stmt->bindParam(':precio', $this->precio);
-        $stmt->bindParam(':stock', $this->stock);
-        $stmt->bindParam(':id', $this->id);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-        return false;
+        return $this->db->query($sql);
     }
 
-    // Eliminar producto
-    public function delete() {
-        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
-        $stmt = $this->conn->prepare($query);
-        $this->id = htmlspecialchars(strip_tags($this->id));
-        $stmt->bindParam(':id', $this->id);
-        if ($stmt->execute()) {
-            return true;
-        }
-        return false;
+    public function eliminar($id){
+
+        $sql = "DELETE FROM productos WHERE id=$id";
+        return $this->db->query($sql);
     }
 }
 ?>
