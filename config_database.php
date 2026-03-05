@@ -1,25 +1,21 @@
 <?php
-// config/database.php
-class Database {
-    private $host = 'localhost';
-    private $db_name = 'inventario_db';
-    private $username = 'root';
-    private $password = '';
-    private $conn;
 
-    public function getConnection() {
-        $this->conn = null;
-        try {
-            $this->conn = new PDO(
-                "mysql:host=" . $this->host . ";dbname=" . $this->db_name,
-                $this->username,
-                $this->password
-            );
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch(PDOException $e) {
-            echo "Error de conexión: " . $e->getMessage();
+class Database{
+
+    public static function conectar(){
+
+        $conexion = new mysqli(
+            "localhost",
+            "root",
+            "",
+            "inventario"
+        );
+
+        if($conexion->connect_error){
+            die("Error de conexión");
         }
-        return $this->conn;
+
+        return $conexion;
     }
 }
 ?>
